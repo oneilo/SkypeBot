@@ -1,0 +1,13 @@
+{
+  "skype": {
+    "user": "timb.hazecraft",
+    "pass": "B9iCf1IG"
+  },
+  "api": {
+    "bitly": "030614fbd96451afd0dd2a0828f0e7149bb853ef",
+    "pandorabot": "b0dafd24ee35a477",
+    "dropbox-token": "yYkWNzHmcmgAAAAAAAAATErcHErEFZQtaPKFMW1Vn93GU699QQcl6M6HIEqVDDLT",
+    "imgur": "ce23be3c8cd6ccc",
+    "haste-url": "http://hastebin.com/documents"
+  }
+}
