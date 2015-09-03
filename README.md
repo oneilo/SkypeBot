@@ -11,3 +11,6 @@ A Skype bot written in Java, more documentation coming later
   + If you do not enter all the keys certain bot commands/features will not work correctly
 5. Restart the bot
 6. Profit
+
+# Todo
++ Change package from skypebot to in.kyle.
