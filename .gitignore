@@ -68,14 +68,12 @@ build/
 *.tlb
 *.tli
 *.tlh
-*.tmp
 *.tmp_proj
 *.log
 *.vspscc
 *.vssscc
 .builds
 *.pidb
-*.log
 *.scc
 
 # Visual C++ cache files
@@ -151,6 +149,8 @@ ClientBin/
 *.[Pp]ublish.xml
 *.pfx
 /misc/CChatlog.java
+/SkypeBot.iml
+/SkypeBot
 *.publishsettings
 
 # RIA/Silverlight projects
@@ -195,7 +195,6 @@ $RECYCLE.BIN/
 *.egg
 *.egg-info
 dist/
-build/
 eggs/
 parts/
 var/
@@ -215,6 +214,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-*.name
 .idea/*
-.idea/dictionaries/Kyle.xml
