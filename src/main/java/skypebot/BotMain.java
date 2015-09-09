@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BotMain {
@@ -84,6 +85,10 @@ public class BotMain {
         
         System.out.println("Done");
         
+        executor.runLaterSync(()->{
+            shutdown(0);
+        }, 1, TimeUnit.DAYS);
+        
         while (running.get()) {
             try {
                 executor.tick();
@@ -94,17 +99,21 @@ public class BotMain {
     }
     
     public void shutdown(int code) {
+        System.out.println("Saving stats");
         stats.save();
+        System.out.println("No longer running");
         running.set(false);
+        System.out.println("Saving chat meta");
         ChatMeta.saveAllMeta();
-        stats.save();
+        System.out.println("Exiting");
         System.exit(code);
+        System.out.println("Done");
     }
     
     public void startCommandListener() {
         new Thread(() -> {
             Scanner s = new Scanner(System.in);
-            while (s.hasNextLine()) {
+            while (running.get()) {
                 String line = s.nextLine().toLowerCase();
                 if (line.equals("stop")) {
                     System.out.println("Stopping the server...");

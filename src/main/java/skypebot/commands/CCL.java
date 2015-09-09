@@ -31,7 +31,7 @@ public class CCL extends BotCommand {
     public String called(BotUser sender, String command, BotMessage chatMessage, BotConversation chat, String[] args) {
         
         ChatMeta meta = chat.getChatMeta();
-        if (!meta.has("api") || meta.get("api").getAsJsonObject().has("cl")) {
+        if (!meta.has("api") || !meta.get("api").getAsJsonObject().has("cl")) {
             return "Due to API restrictions this command has been disabled for this chat" +
                     "\nYou can purchase an API key at http://api.c99.nl/ and run '" + command.charAt(0) + "api cl' to activate the cl command in this chat";
         }

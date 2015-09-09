@@ -6,7 +6,7 @@
 
     <groupId>in.kyle</groupId>
     <artifactId>SkypeBot</artifactId>
-    <version>1.0.37-BETA</version>
+    <version>1.0.48-BETA</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

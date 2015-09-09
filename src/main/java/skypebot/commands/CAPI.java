@@ -25,15 +25,16 @@ public class CAPI extends BotCommand {
     @Override
     public String called(BotUser sender, String command, BotMessage chatMessage, BotConversation chat, String[] args) {
         if (chat.isUserChat()) {
-            if (chats.containsKey(sender)) {
+            Map.Entry<BotUser, ConversationData> data = chats.entrySet().stream().filter(e->e.getKey().getUsername().equals(sender.getUsername())).findAny().orElse(null); 
+            if (data != null) {
                 if (args.length > 1) {
-                    ConversationData data = chats.remove(sender);
-                    ChatMeta meta = chat.getChatMeta();
-    
+                    ConversationData value = data.getValue();
+                    ChatMeta meta = value.getConversation().getChatMeta();
                     JsonObject keys = meta.getOrSet("api", JsonObject::new).getAsJsonObject();
-                    keys.add(data.getApiKey(), new JsonPrimitive(args[1]));
-                    data.getConversation().sendMessage(sender.getUsername() + " has activated " + data.getApiKey());
-                    return "Added key " + data.getApiKey() + " '" + args[1] + "' to " + data.getConversation().getId();
+                    keys.add(value.getApiKey(), new JsonPrimitive(args[1]));
+                    value.getConversation().sendMessage(sender.getUsername() + " has activated " + value.getApiKey());
+                    chats.remove(data.getKey());
+                    return "Added key " + value.getApiKey() + " '" + args[1] + "' to " + value.getConversation().getId();
                 } else {
                     return "Usage: " + command + " api [api key]";
                 }
@@ -49,7 +50,7 @@ public class CAPI extends BotCommand {
                         sender.sendMessage("To activate your API key please reply to this message with the following" +
                                 "\n-api " + key + " [api key]");
                         chats.put(sender, new ConversationData(chat, key));
-                        return "Please follow the sent instructions";
+                        return "Please follow the sent instructions " + chats.size();
                     } else {
                         return "Invalid API " + key;
                     }

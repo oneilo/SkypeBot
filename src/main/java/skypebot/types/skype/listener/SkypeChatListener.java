@@ -21,7 +21,7 @@ public class SkypeChatListener implements EventListener {
     private ChatListener listener;
  
     public void onChat(UserChatEvent e) {
-        if (!e.getUser().equals(api.getSkype())) {
+        if (!e.getUser().getUsername().equals(api.getSkype().getUsername())){
             listener.onMessageReceived(bot, new SkypeBotUser(e.getUser(), bot), new SkypeBotMessage(bot, e.getMsg()), new SkypeBotConversation(e.getChat(), bot));
         }
     }

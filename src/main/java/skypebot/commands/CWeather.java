@@ -18,8 +18,10 @@ public class CWeather extends BotCommand {
     @Override
     public String called(BotUser sender, String command, BotMessage chatMessage, BotConversation chat, String[] args) {
         ChatMeta meta = chat.getChatMeta();
+    
+        System.out.println("1: " + meta.has("api") + "\n2: " + meta.get("api").getAsJsonObject().has("weather") + "\n3: " + meta.getData().toString());
         
-        if (!meta.has("api") || meta.get("api").getAsJsonObject().has("weather")) {
+        if (!meta.has("api") || !meta.get("api").getAsJsonObject().has("weather")) {
             return "Due to API restrictions this command has been disabled for this chat" +
                     "\nYou can register an API key at " + Chat.link("http://openweathermap.org/appid#get") +
                     " and run '" + command.charAt(0) + "api weather' to activate the weather command in this chat";
