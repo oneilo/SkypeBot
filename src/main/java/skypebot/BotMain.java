@@ -8,12 +8,11 @@ import skypebot.obj.bot.BotConfiguration;
 import skypebot.obj.bot.BotExecutor;
 import skypebot.obj.bot.BotProperties;
 import skypebot.obj.bot.BotStats;
+import skypebot.permissions.GlobalPermissions;
 import skypebot.types.skype.SkypeBot;
 import skypebot.wrapper.Bot;
-import skypebot.wrapper.BotCommand;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -34,8 +33,6 @@ public class BotMain {
     @Getter
     private BotStats stats;
     @Getter
-    private List<BotCommand> commands;
-    @Getter
     private AtomicBoolean running;
     @Getter
     private List<Bot> runningBots;
@@ -43,41 +40,38 @@ public class BotMain {
     private ChatListener chatListener;
     @Getter
     private ConversationJoinListener conversationJoinListener;
+    @Getter
+    private GlobalPermissions globalPermissions;
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BotMain bot = new BotMain();
         instance = bot;
         bot.init();
     }
     
-    private void init() {
+    private void init() throws Exception {
         running = new AtomicBoolean(true);
         System.out.println("Getting properties");
         properties = new BotProperties();
         System.out.println("Loading " + properties.getName() + " version " + properties.getVersion());
         
         System.out.println("Loading bot configuration");
-        try {
-            configuration = new BotConfiguration(new File("config.json"), true);
-        } catch (IOException e) {
-            System.out.println("Could not load bot configuration");
-            e.printStackTrace();
-            return;
-        }
+        configuration = new BotConfiguration(new File("config.json"), true);
         
         ChatMeta.initChatMeta(this);
-        chatListener = new ChatListener();
+    
+        System.out.println("Loading global permissions...");
+        globalPermissions = new GlobalPermissions();
+    
+        System.out.println("Loading stats");
+        stats = BotStats.getStats(new File("stats.json"));
+        stats.setStartTime(System.currentTimeMillis());
+        
+        chatListener = new ChatListener(this, globalPermissions);
         executor = new BotExecutor();
         
         startCommandListener();
         
-        try {
-            stats = BotStats.getStats(new File("stats.json"));
-            stats.setStartTime(System.currentTimeMillis());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    
         runningBots = new ArrayList<>();
         
         System.out.println("Loading Skype...");
@@ -85,9 +79,7 @@ public class BotMain {
         
         System.out.println("Done");
         
-        executor.runLaterSync(()->{
-            shutdown(0);
-        }, 1, TimeUnit.DAYS);
+        executor.runLaterSync(() -> shutdown(0), 1, TimeUnit.DAYS);
         
         while (running.get()) {
             try {
