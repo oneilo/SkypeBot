@@ -25,7 +25,7 @@ public class CJava extends BotCommand {
             bsh.set("bot", botHost.getMain());
         } catch (EvalError evalError) {
             evalError.printStackTrace();
-        }
+        } 
     }
     
     @Override
