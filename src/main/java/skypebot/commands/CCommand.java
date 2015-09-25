@@ -50,7 +50,7 @@ public class CCommand extends BotCommand {
                     }
                     return (enable ? "Enabled" : "Disabled") + " command " + subcommand;
                 } else {
-                    return "Usage: " + command + " command enable/disable";
+                    return getUsage(command, "command", "enable/disable");
                 }
             } else {
                 return "You must be a chat admin to run this command!";

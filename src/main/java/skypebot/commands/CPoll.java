@@ -1,10 +1,9 @@
 package skypebot.commands;
 
 import org.apache.commons.lang.StringUtils;
-import skypebot.util.Messages;
 import skypebot.util.api.StrawPoll;
 import skypebot.wrapper.*;
-import xyz.gghost.jskype.chat.Chat;
+import xyz.gghost.jskype.Chat;
 
 import java.util.Arrays;
 
@@ -41,7 +40,7 @@ public class CPoll extends BotCommand {
                             StrawPoll poll = new StrawPoll(id);
                             poll.refresh();
                             StringBuilder message = new StringBuilder();
-                            message.append(Messages.getTitleFormat(poll.getTitle())).append("\n");
+                            message.append(poll.getTitle()).append("\n");
                             poll.getOptions().forEach((k, v) -> message.append(Chat.bold(k)).append(": ").append(v).append("\n"));
                             return message.toString();
                         } catch (NumberFormatException e) {
@@ -51,10 +50,10 @@ public class CPoll extends BotCommand {
                         return "Usage: " + command + "poll view id";
                     }
                 default:
-                    return "Unknown subcommand " + sub + ", use " + command + "poll for a list of subcommands";
+                    return "Unknown sub command " + sub + ", use " + command + " for a list of subcommands";
             }
         } else {
-            return "Usage: " + command + "poll create|view";
+            return "Usage: " + command + " create|view";
         }
     }
 }

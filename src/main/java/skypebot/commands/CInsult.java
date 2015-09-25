@@ -13,10 +13,9 @@ import java.util.regex.Pattern;
  */
 public class CInsult extends BotCommand {
 
-	private static final Pattern pattern = Pattern.compile("<div class=\"wrap\"><br><br>( +)?([?()a-zA-Z #0-9.!,&;'-]+)");
-	private static final String SITE = "http://www.insultgenerator.org/";
-
-	public CInsult(Bot bot) {
+	private final Pattern pattern = Pattern.compile("<div class=\"wrap\"><br><br>( +)?([?()a-zA-Z #0-9.!,&;'-]+)");
+    
+    public CInsult(Bot bot) {
 		super(bot, "insult", "Generate an insult");
 	}
 
@@ -33,7 +32,8 @@ public class CInsult extends BotCommand {
 	}
 
 	private StringBuilder getHtml() throws Exception {
-		HttpURLConnection con = (HttpURLConnection) new URL(SITE).openConnection();
+        String site = "http://www.insultgenerator.org/";
+        HttpURLConnection con = (HttpURLConnection) new URL(site).openConnection();
 		con.setDoOutput(true);
 		BufferedInputStream in = new BufferedInputStream(con.getInputStream());
 		StringBuilder b = new StringBuilder();

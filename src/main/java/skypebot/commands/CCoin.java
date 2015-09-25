@@ -1,5 +1,6 @@
 package skypebot.commands;
 
+import skypebot.permissions.Permission;
 import skypebot.wrapper.*;
 
 import java.util.Random;
@@ -10,7 +11,7 @@ import java.util.Random;
 public class CCoin extends BotCommand {
 
 	public CCoin(Bot bot) {
-		super(bot, "coin", "Flip a coin");
+		super(bot, "coin", "Flip a coin", Permission.DEFAULT);
 	}
 
 	@Override

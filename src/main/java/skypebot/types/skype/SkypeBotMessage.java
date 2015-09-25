@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import skypebot.wrapper.Bot;
 import skypebot.wrapper.BotMessage;
 import skypebot.wrapper.BotUser;
-import xyz.gghost.jskype.var.Message;
+import xyz.gghost.jskype.message.Message;
 
 /**
  * Created by Kyle on 8/31/2015.

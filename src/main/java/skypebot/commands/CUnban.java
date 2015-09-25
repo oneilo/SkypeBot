@@ -3,6 +3,7 @@ package skypebot.commands;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import skypebot.obj.ChatMeta;
+import skypebot.permissions.Permission;
 import skypebot.wrapper.*;
 
 /**
@@ -10,8 +11,8 @@ import skypebot.wrapper.*;
  */
 public class CUnban extends BotCommand {
     
-    public CUnban(Bot Bot) {
-        super(Bot, "unban", "Ban a user from a chat");
+    public CUnban(Bot bot) {
+        super(bot, "unban", "Ban a user from a chat", Permission.ADMIN);
     }
     
     @Override
@@ -32,7 +33,7 @@ public class CUnban extends BotCommand {
                         return "User " + args[0] + " not found";
                     }
                 } else {
-                    return "Usage: " + command + " user";
+                    return getUsage(command, "user");
                 }
             } else {
                 return "You must be a chat admin to run this command!";

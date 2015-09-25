@@ -24,8 +24,7 @@ public class DynamicClassLoader<T> {
 	}
 
 	public List<T> load() {
-		int loaded = 0;
-		for (Class<?> c : PackageUtils.getRecursiveClasses("skypebot.commands", type)) { // get all classes in package
+        for (Class<?> c : PackageUtils.getRecursiveClasses("skypebot.commands")) { // get all classes in package
 			try {
 				DynamicClassLoader.class.getClassLoader().loadClass(c.getCanonicalName());
 				if (type.isAssignableFrom(c)) {
@@ -40,16 +39,15 @@ public class DynamicClassLoader<T> {
                         continue;
                     }
 					objects.add(instance);
-					loaded++;
-				} else {
-					System.out.println("Could not load class : " + c.getCanonicalName());
+                } else {
+					System.err.println("Could not load class : " + c.getCanonicalName());
 				}
 			} catch (ClassNotFoundException e) {
-				System.out.println("Could not load class : " + c.getCanonicalName() + " due to invalid dependencies "
+				System.err.println("Could not load class : " + c.getCanonicalName() + " due to invalid dependencies "
 						+ e.getMessage());
 				e.printStackTrace();
 			} catch (Exception e) {
-				System.out.println("Error while loading class " + (c != null ? c.getName() : "null class?"));
+				System.err.println("Error while loading class " + (c != null ? c.getName() : "null class?"));
 				e.printStackTrace();
 			}
 		}

@@ -5,7 +5,7 @@ import skypebot.util.api.REST;
 /**
  * Created by Kyle on Jun 3, 2015
  */
-public class MCAccountExecutor implements RestExecute {
+public class MCAccountExecutor {
 
 	public String execute(REST con, String[] variables) {
 		boolean valid = canLogin(con, variables[0], variables[1]);

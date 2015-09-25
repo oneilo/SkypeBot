@@ -3,6 +3,7 @@ package skypebot.commands;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import skypebot.obj.ChatMeta;
+import skypebot.permissions.Permission;
 import skypebot.wrapper.*;
 
 /**
@@ -11,7 +12,7 @@ import skypebot.wrapper.*;
 public class CIgnore extends BotCommand {
     
     public CIgnore(Bot bot) {
-        super(bot, "ignore", "Ignore commands from a user");
+        super(bot, "ignore", "Ignore commands from a user", Permission.MODERATOR);
     }
     
     @Override

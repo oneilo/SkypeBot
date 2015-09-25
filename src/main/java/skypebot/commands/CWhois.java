@@ -3,7 +3,7 @@ package skypebot.commands;
 import skypebot.util.api.DomainWhoisLookup;
 import skypebot.util.api.Paste;
 import skypebot.wrapper.*;
-import xyz.gghost.jskype.chat.Chat;
+import xyz.gghost.jskype.Chat;
 
 import java.io.IOException;
 
@@ -38,7 +38,7 @@ public class CWhois extends BotCommand {
             });
             return null;
         } else {
-            return "Usage: " + command + " domain";
+            return getUsage(command, "domain");
 		}
 	}
 }

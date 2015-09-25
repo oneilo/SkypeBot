@@ -3,7 +3,7 @@ package skypebot.commands;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import skypebot.wrapper.*;
-import xyz.gghost.jskype.chat.Chat;
+import xyz.gghost.jskype.Chat;
 
 import java.io.IOException;
 
@@ -11,9 +11,6 @@ import java.io.IOException;
  * Created by Kyle on May 26, 2015
  */
 public class CRandomVideo extends BotCommand {
-    
-    private static final String URL = "http://www.petittube.com";
-    private static final String BASE_URL = "http://youtube.com/watch?v=";
     
     public CRandomVideo(Bot bot) {
         super(bot, "randomvideo", "Get a really random video");
@@ -31,9 +28,11 @@ public class CRandomVideo extends BotCommand {
         return null;
     }
     
-    private static String getRandomURL() throws IOException {
-        Document doc = Jsoup.connect(URL).get();
+    private String getRandomURL() throws IOException {
+        String url = "http://www.petittube.com";
+        Document doc = Jsoup.connect(url).get();
         String s = doc.getElementsByTag("IFRAME").first().attr("src");
-        return BASE_URL + s.substring(s.lastIndexOf("/") + 1, s.indexOf("?"));
+        String youtube = "http://youtube.com/watch?v=";
+        return youtube + s.substring(s.lastIndexOf("/") + 1, s.indexOf("?"));
     }
 }

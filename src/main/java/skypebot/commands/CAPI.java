@@ -5,6 +5,7 @@ import com.google.gson.JsonPrimitive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import skypebot.obj.ChatMeta;
+import skypebot.permissions.Permission;
 import skypebot.wrapper.*;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public class CAPI extends BotCommand {
     private final Map<BotUser, ConversationData> chats;
 
     public CAPI(Bot bot) {
-        super(bot, "api", "Activate API keys");
+        super(bot, "api", "Activate API keys", Permission.ADMIN);
         chats = new HashMap<>();
     }
 
@@ -36,7 +37,7 @@ public class CAPI extends BotCommand {
                     chats.remove(data.getKey());
                     return "Added key " + value.getApiKey() + " '" + args[1] + "' to " + value.getConversation().getId();
                 } else {
-                    return "Usage: " + command + " api [api key]";
+                    return getUsage(command, "key");
                 }
             } else {
                 return "This command must first be run in a group conversation";
@@ -55,7 +56,7 @@ public class CAPI extends BotCommand {
                         return "Invalid API " + key;
                     }
                 } else {
-                    return "Usage: " + command + " api";
+                    return getUsage(command, "api");
                 }
             } else {
                 return "You must be a chat admin to run this command!";

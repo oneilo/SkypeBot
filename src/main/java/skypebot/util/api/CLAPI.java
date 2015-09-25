@@ -7,7 +7,7 @@ public enum CLAPI {
 	RESOLVE("skyperesolver", "username", "Resolve by username"),
 	RESOLVEDB("resolvedb", "username", "Resolve from database"),
 	IPTOSKYPE("ip2skype", "ip", "IP to types"),
-	GETEMAIL("email2skype", "email", "Email to types"),
+	//EMAILTOSKYPE("email2skype", "email", "Email to Skype"),
 	PING("ping", "host", "Ping an address"),
 	GETHOST("gethostname", "host", "IP to hostname"),
 	DNSRESOLVE("dnsresolver", "host", "Hostname to IP"),
@@ -61,7 +61,7 @@ public enum CLAPI {
 
 	private static String appendOption(String url, String key, String value) {
 		if (!key.isEmpty()) {
-			return (url.endsWith("?") ? "" : "&") + key + "=" + value;
+			return url + (url.endsWith("?") ? "" : "&") + key + "=" + value;
 		} else {
 			return url;
 		}

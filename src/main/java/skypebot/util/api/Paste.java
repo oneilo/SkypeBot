@@ -20,8 +20,8 @@ public class Paste {
 			byte[] postData = post.getBytes(Charset.forName("UTF-8"));
             
             String url = main.getConfiguration().get("api").getAsJsonObject().get("haste-url").getAsString();
-            
-			HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+            System.out.println("URL: " + url);
+            HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
 			con.setDoInput(true);

@@ -7,7 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import skypebot.wrapper.*;
-import xyz.gghost.jskype.chat.Chat;
+import xyz.gghost.jskype.Chat;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,7 +43,7 @@ public class CSpigot extends BotCommand {
                 return "Class not found";
             }
         } else {
-            return "Usage: " + command + " class";
+            return getUsage(command, "class");
         }
 
     }

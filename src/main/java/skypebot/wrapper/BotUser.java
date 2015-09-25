@@ -9,6 +9,12 @@ public interface BotUser extends BotImplement{
     
     BotMessage sendMessage(String message);
 
+    void requestContact(String message);
+    
+    boolean isContact();
+    
+    String getMood();
+    
     Object getHandle();
     
 }

@@ -1,4 +1,4 @@
-package skypebot.commands;
+package skypebot.disabledcommands;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
@@ -7,12 +7,12 @@ import skypebot.permissions.Permission;
 import skypebot.wrapper.*;
 
 /**
- * Created by Kyle on 8/29/2015.
+ * Created by Kyle on 9/20/2015.
  */
-public class CUnignore extends BotCommand {
+public class Unmute extends BotCommand {
     
-    public CUnignore(Bot bot) {
-        super(bot, "unignore", "Unignore commands from a user", Permission.MODERATOR);
+    public Unmute(Bot bot) {
+        super(bot, "unmute", "Unmute a user", Permission.MODERATOR);
     }
     
     @Override
@@ -23,7 +23,7 @@ public class CUnignore extends BotCommand {
                     BotUser user = botHost.getUser(args[0]);
                     if (user != null) {
                         ChatMeta meta = chat.getChatMeta();
-                        JsonArray ignored = meta.getOrSet("ignored", JsonArray::new).getAsJsonArray();
+                        JsonArray ignored = meta.getOrSet("mute", JsonArray::new).getAsJsonArray();
                         JsonPrimitive remove = new JsonPrimitive(user.getUsername());
                         ignored.remove(remove);
                         return "Now listening to " + user.getUsername();
@@ -31,7 +31,7 @@ public class CUnignore extends BotCommand {
                         return "User " + args[0] + " not found";
                     }
                 } else {
-                    return getUsage(command, "user");
+                    return "Usage: " + command + " user";
                 }
             } else {
                 return "You must be a chat admin to run this command!";
@@ -40,4 +40,5 @@ public class CUnignore extends BotCommand {
             return "This command is only allowed in conversations";
         }
     }
+    
 }

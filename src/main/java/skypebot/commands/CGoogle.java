@@ -1,59 +1,54 @@
 package skypebot.commands;
 
-import com.google.gson.Gson;
-import lombok.Data;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import skypebot.util.api.REST;
 import skypebot.wrapper.*;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
 
 public class CGoogle extends BotCommand {
-
-	public CGoogle(Bot bot) {
-		super(bot, "google", "Google stuff");
-	}
-
-    @Data
-	public class GoogleResults {
-		private ResponseData responseData;
-	}
-
-    @Data
-	class Result {
-		private String url;
-		private String title;
-	}
-
-    @Data
-	class ResponseData {
-		private List<Result> results;
-	}
-
-	@Override
+    
+    public CGoogle(Bot bot) {
+        super(bot, "google", "Google stuff");
+    }
+    
+    @Override
     public String called(BotUser sender, String command, BotMessage chatMessage, BotConversation chat, String[] args) {
-		if (args.length == 0) {
-			return "Usage: " + command + " [search term]";
-		}
-
-		String google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=";
-		String charset = "UTF-8";
-
-		try {
-			URL url = new URL(google + URLEncoder.encode(StringUtils.join(args, ' ').trim(), charset));
-			Reader reader = new InputStreamReader(url.openStream(), charset);
-			GoogleResults results = new Gson().fromJson(reader, GoogleResults.class);
-			// Show title and URL of 1st result.
-
-            return results.getResponseData().getResults().get(0).getTitle().replaceAll("<.+>", "") +
-                    results.getResponseData().getResults().get(0).getUrl().replaceAll("<.+>", "");
-		} catch (IOException e) {
-			e.printStackTrace();
-            return "An error occurred while performing this command, please try again later";
-		}
-	}
+        if (args.length != 0) {
+            try {
+                String search = StringUtils.join(args, ' ');
+                String URL = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=";
+                REST rest = new REST(URL, search);
+                JsonObject object = rest.getAsJsonObject();
+                int response = object.get("responseStatus").getAsInt();
+                
+                if (response == 200) {
+                    JsonArray responses = object.getAsJsonObject("responseData").getAsJsonArray("results");
+                    if (responses.size() > 0) {
+                        StringBuilder builder = new StringBuilder(search);
+                        for (int i = 0; i < 3 && i < responses.size(); i++) {
+                            JsonObject result = responses.get(i).getAsJsonObject();
+                            String url = result.get("url").getAsString();
+                            String title = result.get("title").getAsString();
+                            builder.append("\n").append("<a href=\"").append(url).append("\">").append(Jsoup.parse(title).text()).append
+                                    ("</a>");
+                        }
+                        return builder.toString();
+                    } else {
+                        return "No results found";
+                    }
+                } else {
+                    return "Unknown response code " + response + "\n" + object.get("responseDetails").getAsString();
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                return e.getMessage();
+            }
+        } else {
+            return getUsage(command, "search");
+        }
+    }
 }

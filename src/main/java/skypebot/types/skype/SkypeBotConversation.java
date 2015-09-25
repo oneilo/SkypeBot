@@ -5,8 +5,7 @@ import skypebot.wrapper.Bot;
 import skypebot.wrapper.BotConversation;
 import skypebot.wrapper.BotMessage;
 import skypebot.wrapper.BotUser;
-import xyz.gghost.jskype.var.Conversation;
-import xyz.gghost.jskype.var.User;
+import xyz.gghost.jskype.Group;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SkypeBotConversation implements BotConversation {
     
-    private Conversation conversation;
+    private Group conversation;
     private SkypeBot bot;
    
     @Override
@@ -35,7 +34,7 @@ public class SkypeBotConversation implements BotConversation {
         
         List<BotUser> users = new ArrayList<>();
         
-        conversation.getConnectedClients().forEach(g -> users.add(new SkypeBotUser(new User(g.getAccount().getUsername()), bot)));
+        conversation.getClients().forEach(g -> users.add(new SkypeBotUser(g.getUser(), bot)));
         
         return users;
     }
@@ -47,17 +46,19 @@ public class SkypeBotConversation implements BotConversation {
     
     @Override
     public boolean isAdmin(BotUser user) {
-        return conversation.isAdmin((User) user.getHandle());
+        return conversation.isAdmin(user.getUsername());
     }
     
     @Override
     public void kick(BotUser user) {
-        conversation.kick((User) user.getHandle());
+        conversation.kick(user.getUsername());
     }
     
     @Override
     public BotMessage sendMessage(String message) {
-        return new SkypeBotMessage(bot, conversation.sendMessage(bot.getApi(), message));
+        System.out.println("=> (" + getId() + ") " + message);
+        message = message.replace("&", "");
+        return new SkypeBotMessage(bot, conversation.sendMessage(message));
     }
     
     @Override

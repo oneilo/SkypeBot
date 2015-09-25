@@ -21,12 +21,12 @@ public class CPrefix extends BotCommand {
                 if (prefix.length() == 1) {
                     ChatMeta meta = chat.getChatMeta();
                     meta.set("command-prefix", new JsonPrimitive(prefix));
-                    return "BotCommand prefix set to '" + prefix + "'";
+                    return "Bot prefix set to '" + prefix + "'";
                 } else {
                     return "Prefix length cannot exceed 1 character";
                 }
             } else {
-                return "Usage: " + command + " prefix";
+                return getUsage(command, "prefix");
             }
         } else {
             return "You must be a chat admin to run this command!";

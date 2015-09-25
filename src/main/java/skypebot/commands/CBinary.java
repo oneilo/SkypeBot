@@ -41,7 +41,7 @@ public class CBinary extends BotCommand {
                 return "Translation:\n" + url;
             }
         } else {
-            return "Syntax error: " + command + " [string] expected";
+            return getUsage(command, "string");
         }
     }
 }

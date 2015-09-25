@@ -1,12 +1,15 @@
 package skypebot.commands;
 
 import com.google.gson.JsonObject;
+import org.apache.commons.lang.StringUtils;
+import org.jsoup.Jsoup;
 import skypebot.obj.ChatMeta;
-import skypebot.util.Messages;
+import skypebot.permissions.Permission;
 import skypebot.util.api.CLAPI;
 import skypebot.util.api.Paste;
 import skypebot.util.api.REST;
 import skypebot.wrapper.*;
+import xyz.gghost.jskype.Chat;
 
 import java.io.IOException;
 
@@ -18,13 +21,21 @@ public class CCL extends BotCommand {
     private final String URL;
     
     public CCL(Bot bot) {
-        super(bot, "cl", "API commands");
+        super(bot, "cl", "API commands", Permission.PLUS);
         StringBuilder message = new StringBuilder();
-        message.append(Messages.getTitleFormat("CLAPI BotCommand List")).append("\n");
+        message.append("CLAPI BotCommand List").append("\n");
         for (CLAPI c : CLAPI.values()) {
-            message.append(Messages.matchLength(c.name(), 20)).append(" ").append(c.getDescription()).append("\n");
+            message.append(matchLength(c.name(), 20)).append(" ").append(c.getDescription()).append("\n");
         }
         URL = Paste.postString(bot.getMain(), message.toString());
+    }
+    
+    private String matchLength(String string, int length) {
+        StringBuilder builder = new StringBuilder(string);
+        while (builder.length() < length) {
+            builder.append(" ");
+        }
+        return builder.toString();
     }
     
     @Override
@@ -33,7 +44,8 @@ public class CCL extends BotCommand {
         ChatMeta meta = chat.getChatMeta();
         if (!meta.has("api") || !meta.get("api").getAsJsonObject().has("cl")) {
             return "Due to API restrictions this command has been disabled for this chat" +
-                    "\nYou can purchase an API key at http://api.c99.nl/ and run '" + command.charAt(0) + "api cl' to activate the cl command in this chat";
+                    "\nYou can purchase an API key at http://api.c99.nl/ and run '" + command.charAt(0) + "api cl' to activate the cl " +
+                    "command in this chat";
         }
     
         JsonObject keys = meta.get("api").getAsJsonObject();
@@ -46,11 +58,13 @@ public class CCL extends BotCommand {
                     
                     if (clapi.isRequireValue()) {
                         if (args.length > 1) {
-                            value = args[1];
+                            value = StringUtils.join(args, ' ', 1, args.length);
                         } else {
-                            return "Usage: " + command + " " + clapi.name() + " " + clapi.getKey();
+                            return getUsage(command, clapi.name(), clapi.getKey());
                         }
                     }
+                    
+                    value = Jsoup.parse(value).text();
                     
                     BotMessage message = chat.sendMessage("Running please wait");
                     
@@ -60,8 +74,8 @@ public class CCL extends BotCommand {
                         if (ret.length() < 100) {
                             message.edit(ret);
                         } else {
-                            val.setResult(Paste.postString(botHost.getMain(), Messages.getTitleFormat("CL " + clapi.name()) + "\n" + ret));
-                            message.edit(val.getAsCroppedURL(100));
+                            val.setResult(Paste.postString(botHost.getMain(), "CL " + clapi.name() + "\n" + ret));
+                            message.edit(Chat.link(val.getAsCroppedURL(100)));
                         }
                     } catch (IOException e) {
                         message.edit("An error occurred, try again later\n" + e.getMessage());
@@ -70,7 +84,7 @@ public class CCL extends BotCommand {
                     return null;
                 }
             }
-            return "BotCommand not found, CL Help: " + URL;
+            return "Command not found, CL Help: " + URL;
         } else {
             return "CL Help: " + URL;
         }

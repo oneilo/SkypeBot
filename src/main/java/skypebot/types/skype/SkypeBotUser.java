@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import skypebot.wrapper.Bot;
 import skypebot.wrapper.BotMessage;
 import skypebot.wrapper.BotUser;
-import xyz.gghost.jskype.var.User;
+import xyz.gghost.jskype.user.User;
 
 /**
  * Created by Kyle on 8/31/2015.
@@ -22,7 +22,22 @@ public class SkypeBotUser implements BotUser {
     
     @Override
     public BotMessage sendMessage(String message) {
-        return new SkypeBotMessage(bot, user.sendMessage(bot.getApi(), message));
+        return new SkypeBotMessage(bot, user.getGroup(bot.getApi()).sendMessage(message));
+    }
+    
+    @Override
+    public void requestContact(String message) {
+        bot.getApi().sendContactRequest(getUsername(), message);
+    }
+    
+    @Override
+    public boolean isContact() {
+        return user.isContact();
+    }
+    
+    @Override
+    public String getMood() {
+        return user.getMood();
     }
     
     @Override

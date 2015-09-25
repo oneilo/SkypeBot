@@ -8,36 +8,22 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class PackageUtils {
-	public static List<String> getClassesInPackage(String path) {
-		List<String> c = new ArrayList();
-		try {
-			File jar = new File(PackageUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-
-			ZipFile zip = new ZipFile(jar);
-			String start = path.replace(".", "/");
-			Enumeration<? extends ZipEntry> s = zip.entries();
-			while (s.hasMoreElements()) {
-				ZipEntry p = s.nextElement();
-				if (p.getName().startsWith(start) && p.getName().endsWith(".class")) {
-					String pack = p.getName().substring(0, p.getName().lastIndexOf("/"));
-					if (pack.replace("/", ".").equals(path)) {
-						c.add(p.getName().replace("/", "."));
-					}
-				}
-			}
-			zip.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return c;
-	}
-
-	public static List<Class<?>> getRecursiveClasses(String path, Class<?> example, String... exclude) {
+    
+    // I hate myself for this
+    private static File getJar() {
+        File dir = new File(".");
+        for (File f : dir.listFiles()) {
+            if (f.getName().equalsIgnoreCase("SkypeBot.jar")) {
+                return f;
+            }
+        }
+        return null;
+    }
+    
+	public static List<Class<?>> getRecursiveClasses(String path, String... exclude) {
 		List<Class<?>> classes = new ArrayList();
 		try {
-			File jar = new File(example.getProtectionDomain().getCodeSource().getLocation().toURI());
-
-			ZipFile zip = new ZipFile(jar);
+			ZipFile zip = new ZipFile(getJar());
 			Enumeration<? extends ZipEntry> s = zip.entries();
 			while (s.hasMoreElements()) {
 				to: {

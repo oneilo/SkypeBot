@@ -6,8 +6,10 @@ import skypebot.BotMain;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -34,6 +36,10 @@ public class REST {
 		this.requestProperities = new HashMap<>();
 		this.printErrors = true;
 	}
+    
+    public REST(String url, String encode) throws UnsupportedEncodingException {
+        this(url + URLEncoder.encode(encode, "UTF-8"));
+    }
 
 	public String getUrl() {
 		return url;

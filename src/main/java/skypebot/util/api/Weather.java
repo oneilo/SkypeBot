@@ -2,7 +2,6 @@ package skypebot.util.api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import skypebot.util.Messages;
 
 import java.io.BufferedInputStream;
 import java.net.HttpURLConnection;
@@ -76,7 +75,7 @@ public class Weather {
             
             // build report
             StringBuilder report = new StringBuilder();
-            report.append(Messages.getTitleFormat("Weather for " + name + ", " + country)).append("\n");
+            report.append("Weather for " + name + ", " + country).append("\n");
             report.append("Temp: ").append(temp).append("°F\n");
             report.append("Humidity: ").append(humidity).append("%\n");
             report.append("Sunrise: ").append(time.format(sunrise)).append("\n");

@@ -26,9 +26,13 @@ public class CCalc extends BotCommand {
                 return all + " = " + new BigDecimal(expr.value()).toPlainString();
 			} catch (SyntaxException e) {
                 return "Syntax error: " + e.explain();
-			}
+			} catch (NumberFormatException e) {
+                return "Error " + e.getMessage();
+            } catch (Exception e) {
+                return "Error " + e.getMessage();
+            }
 		} else {
-            return "Usage: " + command + " [expression]";
+            return getUsage(command, "expression");
 		}
 	}
 }

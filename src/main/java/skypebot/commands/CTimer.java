@@ -43,7 +43,12 @@ public class CTimer extends BotCommand {
 
 	@Override
     public String called(BotUser sender, String command, BotMessage chatMessage, BotConversation chat, String[] args) {
-		if (args.length == 0) {
+		
+        if (timers.entrySet().stream().filter(e->e.getKey().getConversation().getId().equals(chat.getId())).findAny().isPresent()) {
+            return "There is already a timer running in this chat";
+        }
+        
+        if (args.length == 0) {
 			return "Usage: " + command + " [d h m s]";
 		} else {
 			String timeString = StringUtils.join(args, ' ');
@@ -56,7 +61,7 @@ public class CTimer extends BotCommand {
 			} else {
                 if (time <= MAX_TIME) {
                     BotMessage message = chat.sendMessage("Starting");
-                    timers.put(new MessageData(message, sender), time + System.currentTimeMillis());
+                    timers.put(new MessageData(message, sender, chat), time + System.currentTimeMillis());
                     return null;
                 } else {
                     return "Timer cannot exceed 1 hour";
@@ -70,5 +75,6 @@ public class CTimer extends BotCommand {
     class MessageData {
         private BotMessage message;
         private BotUser user;
+        private BotConversation conversation;
     }
 }

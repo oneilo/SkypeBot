@@ -18,7 +18,7 @@ public class ConversationJoinListener {
             JsonPrimitive contains = new JsonPrimitive(user.getUsername());
             if (bans.contains(contains)) {
                 conversation.kick(user);
-                conversation.sendMessage("User is banned from this chat");
+                conversation.sendMessage("User is banned from this botChat");
             }
         }
     }

@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import skypebot.obj.ChatMeta;
 import skypebot.util.api.Weather;
 import skypebot.wrapper.*;
-import xyz.gghost.jskype.chat.Chat;
+import xyz.gghost.jskype.Chat;
 
 /**
  * Created by Kyle on May 17, 2015
@@ -19,8 +19,6 @@ public class CWeather extends BotCommand {
     public String called(BotUser sender, String command, BotMessage chatMessage, BotConversation chat, String[] args) {
         ChatMeta meta = chat.getChatMeta();
     
-        System.out.println("1: " + meta.has("api") + "\n2: " + meta.get("api").getAsJsonObject().has("weather") + "\n3: " + meta.getData().toString());
-        
         if (!meta.has("api") || !meta.get("api").getAsJsonObject().has("weather")) {
             return "Due to API restrictions this command has been disabled for this chat" +
                     "\nYou can register an API key at " + Chat.link("http://openweathermap.org/appid#get") +
